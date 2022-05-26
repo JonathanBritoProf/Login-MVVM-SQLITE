@@ -3,7 +3,7 @@ package com.example.sqliteprimeiraaula.data
 import android.os.Build
 import androidx.annotation.RequiresApi
 
-data class User(val name : String, val pwd : String) {
+data class User(var name : String, var pwd : String) {
 
     fun validaSenha():Boolean {
         return !pwd.isEmpty() && pwd.length >= 8
