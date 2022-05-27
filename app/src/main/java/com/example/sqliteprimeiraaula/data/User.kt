@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 data class User(var name : String, var pwd : String) {
 
     fun validaSenha():Boolean {
-        return !pwd.isEmpty() && pwd.length >= 6
+        return pwd.length >= 6
                // && pwd.any{it.isUpperCase() && it.isLowerCase()}
     }
 }
