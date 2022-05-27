@@ -1,6 +1,7 @@
 package com.example.sqliteprimeiraaula.viewmodel
 
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -21,16 +22,11 @@ class LoginViewModel() : ViewModel() {
     fun OnUserRequestLogin(context: Context, nome : String, password : String){
         user.name = nome
         user.pwd = password
-        if(user.validaSenha()){
-            var helper = DBHelper(context)
-            var db = helper.readableDatabase
-            var queryString = "SELECT * FROM USERS WHERE NOME = '$nome'"
-            var queryResult = db.rawQuery(queryString,null)
-            if(queryResult.moveToNext()){
-                if(queryResult.getString(2).equals(password)){
-                    onUserRequestToLogin.value = true
-                }
-            }
+        var helper = DBHelper(context)
+        if(user.validaSenha() && helper.validateUser(user)){
+            onUserRequestToLogin.value = true
+        }else{
+            Toast.makeText(context,"Verifique os dados digitados", Toast.LENGTH_LONG).show()
         }
     }
 

@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.sqliteprimeiraaula.R
 import com.example.sqliteprimeiraaula.viewmodel.LoginViewModel
 
@@ -28,7 +29,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         passwordEditText = view.findViewById(R.id.password)
         loginButton = view.findViewById(R.id.login)
         setupListeners()
-
+        setupObservers()
     }
 
     fun setupListeners(){
@@ -40,9 +41,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     fun setupObservers(){
-        loginViewModel.onUserRequestToLoginLiveData.observe(this,{
-
-        })
+        loginViewModel.onUserRequestToLoginLiveData.observe(viewLifecycleOwner){
+            if(it){
+                findNavController().navigate(R.id.action_loginFragment2_to_mainFragment2)
+            }
+        }
     }
 
 }
