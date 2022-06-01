@@ -8,19 +8,20 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sqliteprimeiraaula.R
-import com.example.sqliteprimeiraaula.viewmodel.LoginViewModel
+import com.example.sqliteprimeiraaula.viewmodel.AcessViewModel
 
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var acessViewModel: AcessViewModel
     private lateinit var usernameEditText : EditText
     private lateinit var passwordEditText : EditText
     private lateinit var loginButton : Button
+    private lateinit var registerButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        loginViewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
+        acessViewModel = ViewModelProvider(this).get(AcessViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,6 +29,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         usernameEditText = view.findViewById(R.id.username)
         passwordEditText = view.findViewById(R.id.password)
         loginButton = view.findViewById(R.id.login)
+        registerButton = view.findViewById(R.id.registrarBtn)
         setupListeners()
         setupObservers()
     }
@@ -36,12 +38,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         loginButton.setOnClickListener{
             var name = usernameEditText.text.toString()
             var password = passwordEditText.text.toString()
-            loginViewModel.OnUserRequestLogin(requireContext(),name,password)
+            acessViewModel.OnUserRequestLogin(requireContext(),name,password)
+        }
+        registerButton.setOnClickListener{
+            findNavController().navigate(R.id.action_loginFragment2_to_registerFragment)
         }
     }
 
     fun setupObservers(){
-        loginViewModel.onUserRequestToLoginLiveData.observe(viewLifecycleOwner){
+        acessViewModel.onUserRequestToLoginLiveData.observe(viewLifecycleOwner){
             if(it){
                 findNavController().navigate(R.id.action_loginFragment2_to_mainFragment2)
             }

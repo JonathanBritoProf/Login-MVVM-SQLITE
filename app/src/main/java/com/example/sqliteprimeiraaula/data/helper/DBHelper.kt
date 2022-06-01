@@ -1,5 +1,6 @@
 package com.example.sqliteprimeiraaula.data.helper
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -9,7 +10,7 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context,"userDB",null,1) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("CREATE TABLE IF NOT EXISTS USERS(USERID PRIMARY KEY AUTOINCREMENT," +
-                "NOME TEXT, PWD TEXT) ")
+                "NAME TEXT, PWD TEXT) ")
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -18,28 +19,27 @@ class DBHelper (context: Context) : SQLiteOpenHelper(context,"userDB",null,1) {
 
     fun validateUser(user: User) : Boolean {
     var listaDeUser = readAllUsers()
-        for(currentUser in listaDeUser){
-         if(currentUser.name.equals(user.name) && currentUser.pwd.equals(user.pwd)){
-             return true
-         }
-        }
-        return false
+        return listaDeUser.contains(user)
     }
 
     fun readAllUsers() : ArrayList<User>{
         var users = ArrayList<User>()
         var db = readableDatabase
         var queryResult = db.rawQuery("SELECT * FROM USERS",null)
-        var nome : String
-        var password : String
         if(queryResult.moveToNext()){
             while (!queryResult.isAfterLast ){
-                nome = queryResult.getString(1)
-                password = queryResult.getString(2)
-                users.add(User(nome,password))
-                queryResult.moveToNext()
+             //   users.add(User(queryResult.getString(1),queryResult.getString(2)))
+             //   queryResult.moveToNext()
             }
         }
         return users
+    }
+
+    fun insertUser(user: User){
+        var db = writableDatabase
+        var contentValues = ContentValues()
+        contentValues.put("NAME",user.name)
+        contentValues.put("PWD", user.pwd)
+        db.insert("USERS",null,contentValues)
     }
 }

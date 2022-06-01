@@ -1,12 +1,18 @@
 package com.example.sqliteprimeiraaula.data
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 
-data class User(var name : String, var pwd : String) {
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class User(
+    @PrimaryKey(autoGenerate = true)var id : Int?,
+    @ColumnInfo(name = "NAME")var name : String,
+    @ColumnInfo(name = "PWD")var pwd : String) {
 
     fun validaSenha():Boolean {
         return pwd.length >= 6
-               // && pwd.any{it.isUpperCase() && it.isLowerCase()}
+             //   && pwd.any{it.isUpperCase() && it.isLowerCase()}
     }
 }
