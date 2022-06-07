@@ -8,19 +8,19 @@ import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sqliteprimeiraaula.R
-import com.example.sqliteprimeiraaula.viewmodel.AcessViewModel
+import com.example.sqliteprimeiraaula.viewmodel.AccessViewModel
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
-    lateinit var acessViewModel : AcessViewModel
-    lateinit var registerButton : Button
-    lateinit var txtUser : EditText
-    lateinit var txtPassword : EditText
+    private lateinit var accessViewModel : AccessViewModel
+    private lateinit var registerButton : Button
+    private lateinit var txtUser : EditText
+    private lateinit var txtPassword : EditText
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        acessViewModel = ViewModelProvider(this).get(AcessViewModel::class.java)
+        accessViewModel = ViewModelProvider(this)[AccessViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,16 +32,16 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         setupObservers()
     }
 
-    fun setupListeners(){
+    private fun setupListeners(){
         registerButton.setOnClickListener{
-            var name = txtUser.text.toString()
-            var password = txtPassword.text.toString()
-            acessViewModel.OnUserRequestRegister(requireContext(),name,password)
+            val name = txtUser.text.toString()
+            val password = txtPassword.text.toString()
+            accessViewModel.onUserRequestRegister(requireContext(),name,password)
         }
     }
 
-    fun setupObservers(){
-        acessViewModel.onUserRequestToRegisterLiveData.observe(viewLifecycleOwner){
+    private fun setupObservers(){
+        accessViewModel.onUserRequestToRegisterLiveData.observe(viewLifecycleOwner){
             if(it){
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment2)
             }

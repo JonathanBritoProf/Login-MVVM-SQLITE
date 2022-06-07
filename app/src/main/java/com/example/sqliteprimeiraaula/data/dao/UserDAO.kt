@@ -11,7 +11,7 @@ interface UserDAO {
 
     @Query("SELECT * FROM user WHERE name LIKE :name AND " +
             "pwd LIKE :password LIMIT 1")
-    fun findByName(name: String, password: String): User
+    fun findByName(name: String, password: String): User?
 
     @Insert
     fun insert(user: User)
